@@ -1,0 +1,335 @@
+/* Sidebar Container */
+.sidebar {
+  transition: all 0.3s ease-in-out;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(226, 232, 240, 0.5);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 10;
+  height: 100vh;
+}
+
+.sidebar-expanded {
+  width: 16rem; /* 64 * 0.25rem = 16rem */
+}
+
+.sidebar-collapsed {
+  width: 4.5rem; /* 18 * 0.25rem = 4.5rem */
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .sidebar {
+    background-color: rgba(15, 23, 42, 0.8);
+    border-right: 1px solid rgba(51, 65, 85, 0.5);
+  }
+}
+
+/* Logo Section */
+.sidebar-logo-section {
+  padding: 0.89rem; 
+  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+}
+
+@media (prefers-color-scheme: dark) {
+  .sidebar-logo-section {
+    border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+  }
+}
+
+.sidebar-logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sidebar-logo-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: linear-gradient(to right, #2563eb, #9333ea);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  
+}
+
+@media (prefers-color-scheme: dark) {
+  .sidebar-title {
+    color: #ffffff;
+  }
+}
+
+.sidebar-subtitle {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .sidebar-subtitle {
+    color: #94a3b8;
+  }
+}
+
+/* Navigation */
+.sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem; /* p-4 = 1rem */
+  overflow-y: auto;
+}
+
+.nav-item-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-item-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.625rem 1rem; /* p-2.5 and px-4 combined */
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+@media (min-width: 640px) {
+  .nav-item-button {
+    padding: 0.625rem 1rem;
+  }
+}
+
+.nav-item-active {
+  background: linear-gradient(to right, #3b82f6, #9333ea);
+  color: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.nav-item-inactive {
+  color: #475569;
+  background: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  .nav-item-inactive {
+    color: #cbd5e1;
+  }
+}
+
+.nav-item-inactive:hover {
+  background-color: #475569;
+}
+
+@media (prefers-color-scheme: dark) {
+  .nav-item-inactive:hover {
+    background-color: rgba(226, 232, 240, 0.2);
+  }
+}
+
+.nav-item-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* gap-3 = 0.75rem */
+}
+
+.nav-item-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
+.nav-item-label {
+  font-weight: 500;
+  margin-left: 0.5rem; /* ml-2 = 0.5rem */
+}
+
+/* Badges */
+.badge {
+  padding: 0.25rem 0.5rem; /* px-2 py-1 = 0.25rem 0.5rem */
+  font-size: 0.875rem;
+  border-radius: 0.125rem; /* rounded-sm = 0.125rem */
+}
+
+.badge-red {
+  background-color: #ef4444;
+  color: white;
+}
+
+.badge-gray {
+  background-color: #e2e8f0;
+  color: #475569;
+}
+
+@media (prefers-color-scheme: dark) {
+  .badge-gray {
+    background-color: #334155;
+    color: #f1f5f9;
+  }
+}
+
+/* Chevron Icon */
+.chevron-icon {
+  width: 1rem;
+  height: 1rem;
+  transition: transform 0.2s;
+  margin-left: 2.5rem; /* ml-10 = 2.5rem */
+}
+
+.chevron-rotated {
+  transform: rotate(180deg);
+}
+
+/* Submenu */
+.submenu-container {
+  margin-left: 2rem; /* ml-8 = 2rem */
+  margin-top: 0.5rem; /* mt-2 = 0.5rem */
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem; /* space-y-1 = 0.25rem */
+}
+
+.submenu-item {
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: #475569;
+  background: transparent;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+@media (prefers-color-scheme: dark) {
+  .submenu-item {
+    color: #cbd5e1;
+  }
+}
+
+.submenu-item:hover {
+  background-color: #f1f5f9;
+}
+
+@media (prefers-color-scheme: dark) {
+  .submenu-item:hover {
+    background-color: rgba(226, 232, 240, 0.1);
+  }
+}
+
+/* User Profile Section */
+.sidebar-profile-section {
+  padding: 0.5rem 0.75rem;
+  border-top: 1px solid rgba(226, 232, 240, 0.5);
+}
+
+@media (prefers-color-scheme: dark) {
+  .sidebar-profile-section {
+    border-top: 1px solid rgba(51, 65, 85, 0.5);
+  }
+}
+
+.profile-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; 
+  padding: 0.5rem;
+  border-radius: 0.75rem; 
+  background-color: #f8fafc;
+}
+
+@media (prefers-color-scheme: dark) {
+  .profile-wrapper {
+    background-color: rgba(30, 41, 59, 0.5);
+  }
+}
+
+.profile-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 2px solid #3b82f6;
+  flex-shrink: 0;
+}
+
+.profile-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.profile-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1e293b;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (prefers-color-scheme: dark) {
+  .profile-name {
+    color: #ffffff;
+  }
+}
+
+.profile-username {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (prefers-color-scheme: dark) {
+  .profile-username {
+    color: #94a3b8;
+  }
+}
+
+/* Scrollbar Styling */
+.sidebar-nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .sidebar-nav::-webkit-scrollbar-thumb {
+    background: #475569;
+  }
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
