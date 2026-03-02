@@ -216,6 +216,22 @@ async login(req, res) {
   }
 }
 
+  // Logout user
+  async logout(req, res) {
+    try {
+      res.status(200).json({
+        success: true,
+        message: "Logged out successfully"
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Logout failed"
+      });
+    }
+  }
+
   // Get current user
   async getCurrentUser(req, res) {
     try {
@@ -285,6 +301,8 @@ async login(req, res) {
       });
     }
   }
+
+  
 
   // Forgot password (placeholder - implement as needed)
   async forgotPassword(req, res) {

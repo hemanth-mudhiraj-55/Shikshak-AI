@@ -71,28 +71,39 @@ function App() {
     };
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-all duration-500">
-        <div className="flex h-screen overflow-hidden">
-          <Sidebar
-            collapsed={sidebarCollapsed}
-            onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
-            currentPage={currentPage}
-            onPageChange={setCurrentPage}
-          />
-          <div className="flex-1 flex flex-col overflow-hidden">
-            {/* <Header
-              sidebarCollapsed={sidebarCollapsed}
-              onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
-              user={user}
-            /> */}
-            <main className="flex-1 overflow-y-auto bg-transparent">
-              <div className="p-6 space-y-6">
-                {renderContent()}
-              </div>
-            </main>
-          </div>
-        </div>
+      <div className="min-h-screen bg-gradient-to-br 
+  from-slate-50 via-blue-50 to-indigo-50 
+  dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 
+  transition-all duration-500"
+>
+
+  {/* ✅ HEADER FULL WIDTH */}
+  <Header
+    sidebarCollapsed={sidebarCollapsed}
+    onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
+    user={user}
+  />
+
+  {/* ✅ BELOW HEADER SECTION */}
+  <div className="flex h-[calc(100vh-90px)] overflow-hidden">
+    
+    {/* Sidebar */}
+    <Sidebar
+      collapsed={sidebarCollapsed}
+      onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+      currentPage={currentPage}
+      onPageChange={setCurrentPage}
+    />
+
+    {/* Main Content */}
+    <main className="flex-1 overflow-y-auto bg-transparent">
+      <div className="p-6 space-y-6">
+        {renderContent()}
       </div>
+    </main>
+
+  </div>
+</div>
     );
   };
 

@@ -11,6 +11,7 @@ router.post('/verify-otp-register', validateOTP, authController.verifyOTPAndRegi
 router.post('/login', validateLogin, authController.login);
 router.post('/resend-otp', authController.resendOTP);
 router.post('/forgot-password', authController.forgotPassword);
+router.post("/logout", authController.logout);
 
 // Protected routes
 router.get('/me', authMiddleware, authController.getCurrentUser);

@@ -1,115 +1,53 @@
-import React from 'react';
-import {
-  Menu,
-  LayoutDashboard,
-  BarChart3,
-  Users,
-  Filter,
-  ChevronDown,
-  Search,
-  Plus,
-  Sun,
-  Bell,
-  ShoppingBag,
-  CreditCard,
-  MessageSquare,
-  Calendar,
-  FileText,
-  Package,
-  Settings
-} from "lucide-react";
-import defaultAvatar from "../../../../assets/userprofile.svg";
-import './Header.css';
+import React from "react";
+import "./Header.css";
 
-export default function Header({ sidebarCollapsed, onToggleSidebar }) {
-const storedUser = JSON.parse(localStorage.getItem("user"));
+export default function Header() {
+  const handleLogout = async () => {
+  try {
+    await api.post('/auth/logout');
+  } catch (error) {
+    console.log("Logout API error:", error);
+  }
 
-const user = {
-  profilePic: storedUser?.profilePicture || null,
-  name: storedUser?.username || "User",
-  username: storedUser?.email || "",
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+
+  window.location.href = "/";
 };
 
   return (
     <div className="header-container">
       <div className="header-content">
-        {/* Left Section */}
         <div className="header-left">
-          <button 
-            className="menu-button"
-            onClick={onToggleSidebar}
-          >
-            <Menu className="menu-icon" />
-          </button>
-
-          <div className="welcome-section">
-            <h1 className="welcome-title">
-              Dashboard
-            </h1>
-            <p className="welcome-subtitle">
-              Welcome back, Alex! here's what's happening today
-            </p>
+          <div className="header-logo">
+            {/* App Icon - You can replace the emoji with an actual icon */}
+            <span className="header-icon">🎓</span>
+          </div>
+          <div className="header-text">
+            <h1 className="header-title">Shikshak AI</h1>
+            <p className="header-subtitle">A Virtually Teaching Platform</p>
           </div>
         </div>
-
-        {/* Center - Search */}
-        <div className="search-container">
-          <div className="search-wrapper">
-            <Search className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search"
-              className="search-input"
-            />
-            <button className="filter-button">
-              <Filter className="filter-icon" />
-            </button>
-          </div>
-        </div>
-
-        {/* Right Section */}
+        
         <div className="header-right">
-          {/* Quick Action */}
-          <button className="quick-action-button">
-            <Plus className="quick-action-icon" />
-            <span className="quick-action-text">New</span>
+          <button className="logout-button" onClick={handleLogout}>
+            <svg 
+              className="logout-icon" 
+              width="20" 
+              height="20" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            <span>Logout</span>
           </button>
-
-          {/* Theme Toggle */}
-          <button className="icon-button">
-            <Sun className="icon" />
-          </button>
-
-          {/* Notification */}
-          <button className="notification-button">
-            <Bell className="notification-icon" />
-            <span className="notification-badge">
-              3
-            </span>
-          </button>
-
-          {/* Settings */}
-          <button className="icon-button">
-            <Settings className="icon" />
-          </button>
-
-          {/* User profile */}
-          <div className="user-profile">
-            <img
-              src={user.profilePic || defaultAvatar}
-              alt="User"
-              className="user-avatar"
-            />
-            <div className="user-info">
-              <p className="user-name">
-                {user.name}
-              </p>
-              <p className="user-username">
-                {user.username}
-              </p>
-            </div>
-            <ChevronDown className="user-dropdown-icon" />
-          </div>
         </div>
       </div>
     </div>

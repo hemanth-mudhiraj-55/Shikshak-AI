@@ -108,19 +108,7 @@ function Sidebar({ collapsed, onToggle, currentPage, onPageChange }) {
   return (
     
     <div className={`sidebar ${collapsed ? 'sidebar-collapsed' : 'sidebar-expanded'}`}>
-      {/* Logo Section */}
-      <div className="sidebar-logo-section">
-        <div className="sidebar-logo-wrapper">
-          <div className="sidebar-logo-icon" />
-          {!collapsed && (
-            <div className="sidebar-logo-text">
-              <h1 className="sidebar-title">Shikshak</h1>
-              <p className="sidebar-subtitle">User Panel</p>
-            </div>
-          )}
-        </div>
-      </div>
-
+      
       {/* Navigation */}
       <nav className="sidebar-nav">
         {menuItems.map((item) => {
