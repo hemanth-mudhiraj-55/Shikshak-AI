@@ -1,0 +1,63 @@
+Avatar / Lip-Sync Generation - What Still Needs To Be Done
+Last updated: 2026-04-29
+
+1. Avatar Input Pipeline
+- Accept a clear front-facing teacher photo.
+- Optionally accept a short reference video.
+- Validate consent before processing.
+
+2. Avatar Asset Creation
+- Create a base avatar from the uploaded face.
+- Store generated avatar assets separately from raw uploads.
+- Generate a preview for verification.
+
+3. Text-to-Speech
+- Convert summary/answer text into speech audio.
+- Keep one consistent voice per teacher model.
+- Save audio files for reuse when needed.
+
+4. Lip-Sync Engine
+- Use a lip-sync model like `Wav2Lip` or a talking-head pipeline.
+- Input: teacher face/avatar + generated audio.
+- Output: speaking video with synced mouth movement.
+
+5. Render Pipeline
+- Generate final video output (MP4).
+- Save output path in the teacher/content session record.
+- Return the video URL to the frontend.
+
+6. Real-Time vs Offline Flow
+- Start with offline generation for summaries and lectures.
+- Later support near-real-time responses.
+- Keep audio-only fallback if video generation is slow.
+
+7. Interrupt Handling
+- Stop audio/video playback immediately when student interrupts.
+- Cancel current speaking job if possible.
+- Switch back to listening mode and process the new question.
+
+8. Backend Job System
+- Run avatar/lip-sync generation as a background job.
+- Track states: `queued`, `processing`, `done`, `failed`.
+- Show progress in the UI.
+
+9. Storage and Cleanup
+- Store raw uploads, generated avatar assets, audio, and videos.
+- Add delete/regenerate options.
+- Clean unused generated files to save space.
+
+10. Admin and Safety Controls
+- Only approved teacher requests should be processed.
+- Show synthetic-media disclosure.
+- Let admin disable or remove generated teacher models.
+
+11. Frontend Integration
+- Add “Generate Avatar” / “Generate Lecture Video” actions.
+- Show processing state and preview player.
+- Show clear errors when generation fails.
+
+12. Quality Improvements Later
+- Better face alignment and cropping.
+- Better voice quality.
+- Better lip accuracy and natural head motion.
+

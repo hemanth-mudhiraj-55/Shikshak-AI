@@ -1,0 +1,12 @@
+{
+  "watch": ["backend/server.js", "backend/routes", "backend/controllers", "backend/middleware", "backend/lib", "backend/utils", "backend/services", "backend/config"],
+  "ext": "js",
+  "ignore": [
+    "backend/data/db.json",
+    "backend/uploads/**",
+    "backend/node_modules/**",
+    "frontend/**",
+    "node_modules/**"
+  ],
+  "delay": "200"
+}

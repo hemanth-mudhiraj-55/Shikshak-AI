@@ -1,16 +1,92 @@
-# React + Vite
+# Shikshak AI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A virtual teaching platform built with React and Express.js.
 
-Currently, two official plugins are available:
+## Project Structure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```text
+shikshak-ai/
+|-- frontend/          # React + Vite frontend
+|   |-- src/
+|   |   |-- Components/Pages/   # Page components
+|   |   |-- services/           # API and auth services
+|   |   |-- assets/             # Static assets
+|   |   |-- App.jsx             # Root component with routing
+|   |   `-- main.jsx            # Entry point
+|   |-- index.html
+|   |-- vite.config.js
+|   `-- package.json
+|-- backend/           # Express.js API server
+|   |-- config/        # Local storage configuration
+|   |-- controllers/   # Route handlers
+|   |-- data/          # Local JSON persistence
+|   |-- middleware/    # Auth, validation, upload middleware
+|   |-- routes/        # API route definitions
+|   |-- services/      # Email and OTP services
+|   |-- utils/         # Token generation utilities
+|   |-- uploads/       # File uploads (books, covers)
+|   |-- server.js      # Entry point
+|   `-- package.json
+|-- package.json       # Root scripts (run both)
+`-- .gitignore
+```
 
-## React Compiler
+## Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Prerequisites
 
-## Expanding the ESLint configuration
+- Node.js (v18+)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Installation
+
+```bash
+npm install
+npm run install:all
+```
+
+### Configuration
+
+Create `backend/.env`:
+
+```env
+PORT=2000
+NODE_ENV=development
+FRONTEND_URL=http://localhost:5173
+STORAGE_DRIVER=local-json
+JWT_SECRET=change-this-local-jwt-secret
+JWT_REFRESH_SECRET=change-this-local-refresh-secret
+EMAIL_USER=
+EMAIL_PASS=
+```
+
+If `EMAIL_USER` and `EMAIL_PASS` are blank, OTP and welcome emails are logged locally instead of being sent through Gmail.
+
+### Running
+
+```bash
+npm run dev
+```
+
+Or run each app separately:
+
+```bash
+npm run dev:frontend   # http://localhost:5173
+npm run dev:backend    # http://localhost:2000
+```
+
+### Data Storage
+
+The backend now stores all app data in `backend/data/db.json`.
+
+### Build
+
+```bash
+npm run build
+npm start
+```
+
+## Tech Stack
+
+**Frontend:** React 18, Vite, Tailwind CSS, MUI, React Router, Nivo Charts, FullCalendar
+
+**Backend:** Express.js 5, local JSON storage, JWT, Nodemailer, Multer

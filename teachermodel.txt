@@ -1,0 +1,212 @@
+Teacher Model (AI Teacher Avatar) - Technical Design + Build Process
+Last updated: 2026-04-29
+
+Goal (What “Teacher Model” Means Here)
+- A student requests/creates a “teacher model” (identity + avatar).
+- Admin approves the request before it becomes usable.
+- Student uploads a PDF, app summarizes it using OpenAI (with student-provided API key).
+- The teacher avatar speaks the summary with correct lip sync.
+- Student can talk back (voice). System listens, answers, and can be interrupted mid-speech (“stop”, “excuse me”, etc.).
+
+Important Reality Check
+- “Exact lip movement” is not one single feature; it’s a pipeline:
+  1) Create the avatar face (2D/3D representation)
+  2) Generate speech audio
+  3) Generate mouth motion (visemes / blendshapes) aligned to the audio
+  4) Render final video or real-time animation
+- For an academic project we should build it in milestones: start with a 2D talking head + lip-sync, then evolve to 3D later.
+
+High-Level Architecture
+- Frontend (student dashboard):
+  - Teacher Models page (request, list, view)
+  - PDF upload + summary view
+  - “Talk to Teacher” voice UI (push-to-talk + transcript + responses)
+- Backend (Express, local JSON storage in this repo right now):
+  - Teacher model records + approval workflow
+  - File uploads (teacher media, PDFs)
+  - Summarize endpoint (calls OpenAI with user key)
+  - TTS endpoint (calls a TTS provider or OpenAI audio)
+  - Lip-sync endpoint (offline processing or a worker)
+
+Data Model (What We Store)
+1) TeacherModel
+- id
+- ownerStudentId
+- requestedByStudentId
+- status: requested | approved | rejected
+- teacherName
+- subjectTags[]
+- assets:
+  - sourceFaceImageUrl (or video)
+  - generatedAvatarAssetUrl(s)
+  - previewVideoUrl (optional)
+- createdAt/updatedAt
+
+2) TeacherModelRequest
+- id
+- studentId
+- teacherName + justification
+- face input: image/video + source consent checkbox
+- status + adminReviewerId + adminNote + timestamps
+
+3) ContentSession (per “study” request)
+- id
+- studentId
+- teacherModelId
+- sourcePdfUrl
+- extractedText (optional cached)
+- summaryText
+- createdAt
+
+4) ConversationSession (voice chat)
+- id
+- studentId
+- teacherModelId
+- messages: {role: user|assistant, text, createdAt}
+- audio artifacts (optional)
+
+Admin Approval Flow (Must-Have for Safety)
+1) Student submits request with:
+  - Teacher name, subject, and face media
+  - Consent checkbox: “I have rights/consent to use this face”
+2) Backend stores request as status=requested.
+3) Admin dashboard shows pending requests, with preview.
+4) Admin approves -> TeacherModel status=approved and becomes available in student account.
+5) Admin rejects -> store reason; student can re-submit.
+
+Tech Options (Recommended Stack)
+We can build two variants depending on time and compute.
+
+A) Minimum Viable (Recommended first)
+- Avatar type: 2D “talking head” video generated from a single photo.
+- Lip-sync: Wav2Lip (or equivalent) to match mouth to speech audio.
+- Rendering: output MP4, play it in frontend.
+- Pros: looks “real”, easy to demo, works with one image.
+- Cons: not real-time; needs GPU/processing time; quality depends on input photo.
+
+B) Real-Time 3D Avatar (Later milestone)
+- Avatar type: 3D head with blendshapes.
+- Lip-sync: viseme generation (Rhubarb Lip Sync / Oculus visemes / model-based) + WebGL render (Three.js).
+- Pros: real-time interactive; can stop instantly on interrupt.
+- Cons: much more engineering (rigging, 3D assets, animation, rendering).
+
+What Tech We Use (Concrete)
+1) Summarization / Q&A
+- OpenAI Chat Completions (text model) for:
+  - PDF summary
+  - question answering grounded to summary + extracted text
+- Guardrails:
+  - “Answer only using the provided PDF content; if missing, say you don’t know”
+  - limit tokens + chunking strategy
+
+2) PDF Text Extraction
+- Backend: `pdf-parse` (Node) or a Python service using `pypdf` / `pdfminer.six`.
+- For better results (scanned PDFs): OCR with Tesseract (optional).
+
+3) Speech-to-Text (student voice)
+- Option 1 (fastest): Browser Web Speech API for MVP (not perfect, but easy).
+- Option 2 (better): Whisper / OpenAI audio transcription endpoint on backend.
+
+4) Text-to-Speech (teacher voice)
+- Option 1: OpenAI TTS (natural voice, easy API).
+- Option 2: Azure TTS / Google TTS (also good).
+- Output: mp3/wav.
+
+5) Lip Sync
+- Offline video generation (MVP):
+  - Wav2Lip: input (face video or static image expanded to video) + audio -> lip-synced video.
+  - If only an image: create a base “still” video by repeating the frame or use a talking-head animator first.
+- Real-time (later):
+  - Generate visemes from text/phonemes and animate a 3D rig in Three.js.
+
+6) Interrupt Handling (“stop / excuse me”)
+- The key is we cannot treat “speaking” as one uninterruptible action.
+- Approach:
+  - Keep conversation state machine on frontend:
+    - listening -> thinking -> speaking
+  - While speaking, continuously listen for a stop-intent:
+    - either via on-device keyword detection (simple) or streaming STT
+  - When interrupt detected:
+    - stop audio playback immediately
+    - cancel any in-flight TTS/video generation if possible
+    - switch to listening state and record the user’s new question
+
+Step-by-Step Process (End-to-End)
+
+Phase 1: Create / Request Teacher Model
+1) Student clicks “Request Teacher Model”.
+2) Upload face image/video + enter name/subject + consent.
+3) Backend stores request and file in `/uploads/teacher-requests/...`.
+4) Admin reviews.
+5) On approval, backend creates TeacherModel entry and copies assets to `/uploads/teachers/...`.
+
+Phase 2: Student Uploads PDF and Gets Summary
+1) Student selects an approved teacher model.
+2) Upload PDF.
+3) Backend extracts text (chunked).
+4) Backend calls OpenAI:
+  - system: “You are a helpful teacher…”
+  - user: PDF content chunks / or vector-retrieved snippets
+  - output: summary + key points + quiz questions (optional)
+5) Store summary in ContentSession.
+
+Phase 3: Teacher Speaks Summary (Avatar + Lip Sync)
+1) Backend calls TTS to generate audio for summary text.
+2) Lip-sync service generates video from:
+  - teacher face asset (image/video)
+  - generated audio
+3) Store output video URL and return to frontend.
+4) Frontend plays the teacher video.
+
+Phase 4: Student Asks Questions (Voice) + Interruptions
+1) Student presses push-to-talk; we record mic audio.
+2) STT -> text transcript.
+3) Backend calls OpenAI Q&A using:
+  - summary
+  - extracted text (or retrieved chunks)
+  - conversation context
+4) Backend returns answer text.
+5) Frontend starts speaking:
+  - either play TTS audio immediately (fast)
+  - optionally render lip-sync video
+6) If student says “stop/excuse me”:
+  - frontend stops playback immediately
+  - start STT again and treat it as next user message
+
+Optimization Notes (So It Feels Fast)
+- Don’t generate lip-synced video for every short response at first.
+  - Use audio-only TTS for quick answers.
+  - Use full avatar lip-sync for summaries or “lecture mode”.
+- Cache:
+  - PDF extracted text
+  - summary output
+  - TTS audio for the summary
+- Chunking:
+  - store chunks + embeddings (later) for faster retrieval Q&A.
+
+Security / Safety / Ethics (Must in this project)
+- Consent: require explicit student affirmation and admin approval for any face-based model.
+- Content policy: no “impersonation” claims; show synthetic media disclosure in UI.
+- Storage:
+  - store only what is needed
+  - allow delete teacher model and generated media
+- Secrets:
+  - student OpenAI key must never be exposed to frontend logs; store encrypted if persisted, or require per-session entry.
+
+What We Have vs What We Need To Build (Gap)
+- Currently in this repo, the Teachers page is mostly UI and the PDF “generate” is a placeholder.
+- Needed next implementations:
+  - Admin approval workflow endpoints + UI
+  - Real PDF upload + text extraction + OpenAI summarization endpoint
+  - TTS endpoint
+  - Lip-sync worker/service (likely Python) triggered by backend job
+  - Real voice chat (STT + interrupt logic)
+
+Recommended Build Milestones (Practical)
+1) Teacher request + admin approval (no avatar generation yet).
+2) PDF summarize endpoint (OpenAI) + show summary in UI.
+3) TTS audio playback for summary (no lip sync yet).
+4) Interruptible voice Q&A (audio-only answers).
+5) Lip-sync video generation for summary (Wav2Lip pipeline).
+6) Upgrade toward real-time 3D avatar if time allows.
+

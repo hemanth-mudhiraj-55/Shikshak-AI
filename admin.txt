@@ -1,0 +1,75 @@
+Admin Dashboard - What To Add (and Why)
+Last updated: 2026-04-29
+
+ 
+
+Mandatory Admin Login
+- Admin credentials (seeded on backend startup):
+  - id/username: admin
+  - password: admin
+- Login input can be either email or username; type "admin" in the email field to login as admin.
+
+Admin Dashboard Pages / Modules To Add
+
+1) Overview (Admin Home)
+- Counts: total students, pending teacher-model requests, pending fee invoices, pending homework packs to publish, upcoming exams to publish.
+- Quick actions: approve/reject teacher requests, create invoices, publish exam, publish homework pack.
+
+2) Teacher Model Requests (Approval Workflow)
+- List: pending/approved/rejected requests.
+- Preview: uploaded teacher photo/video.
+- Approve/Reject with reason.
+- Audit: who approved, when, and what student requested it.
+- Safety: consent flag + “report abuse” + delete request assets.
+
+3) Teachers Catalog (Approved Models)
+- View all approved teacher models.
+- Disable/void a model.
+- Reassign ownership (optional) or set “global teacher” usable by all.
+
+4) Students / Users Management
+- List/search users.
+- View profile + activity summary.
+- Actions: deactivate/reactivate, reset password flow (optional), role changes (admin-only).
+
+5) Fees / Invoices (Student Fee Payments)
+- Create fee invoices (per student/cohort/term).
+- Mark invoice void, apply discounts/late fees (future).
+- View payments + receipts.
+- Dispute handling: payment issue tickets.
+
+6) Homework “Game Packs” Admin
+- Create/edit packs, levels, MCQs, scoring rules.
+- Assign packs to students/cohorts.
+- Monitor completion and attempt stats.
+
+7) Exams Admin
+- Create exams, publish to cohorts, schedule.
+- Monitor participation + results.
+- (Later) Bot-league rules and match scheduling.
+
+8) Content Safety & Consent
+- Consent & policy screen: synthetic media disclosure.
+- Logs: generated videos, uploaded face assets (with retention policy).
+- Deletion tools: delete generated media for a student.
+
+9) Messaging Moderation (Optional)
+- Handle abuse reports.
+- Block/unblock users (admin override).
+- View flagged conversations metadata (not full content unless required).
+
+10) System Settings / Config
+- App-level limits:
+  - bot daily character limit
+  - max PDF size
+  - allowed file types
+- SMTP status page (email sending health).
+- OpenAI usage visibility (if student keys are used, only store minimal metadata).
+
+Recommended Implementation Order (Fastest Value)
+1) Teacher Model Requests approval UI (already partially available via Teachers page).
+2) Fees invoice creation UI (admin).
+3) Homework pack admin UI.
+4) Exams admin publish UI.
+5) User management + safety/consent controls.
+

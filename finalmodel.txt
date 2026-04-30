@@ -1,0 +1,113 @@
+Final Model Choice - Best Option for Shikshak AI
+Last updated: 2026-04-30
+
+Chosen Option
+- The best option is:
+  - create the teacher avatar once after admin approval
+  - then use that avatar in a live class session
+  - do not generate a full MP4 video every time a student uploads a PDF
+
+Why This Is the Best Option
+- It matches your actual product idea:
+  - student asks admin for permission to use a teacher photo
+  - admin approves
+  - avatar is prepared once
+  - student can study with that avatar live
+- It avoids a bad user experience:
+  - no "upload PDF and wait 15-20 minutes for a video"
+  - no "come back tomorrow to watch the result"
+- It is more scalable:
+  - one-time heavy processing
+  - repeated live use afterwards
+
+What I Am Going to Do
+
+1. Teacher Approval Flow
+- Student uploads teacher photo request.
+- Admin reviews and approves/rejects it.
+- Only approved requests can move to avatar creation.
+
+2. One-Time Avatar Preparation
+- After admin approval, create the teacher avatar once.
+- Save avatar-related assets in backend storage.
+- Mark avatar status as:
+  - `pending`
+  - `processing`
+  - `ready`
+  - `failed`
+
+3. Teacher Model Record
+- Store these fields for each approved teacher:
+  - `photoUrl`
+  - `videoUrl` or preview clip
+  - `avatarStatus`
+  - `avatarType`
+  - `voiceProfile`
+  - `generatedAvatarUrl` or avatar asset path
+
+4. Live Class Flow
+- Student selects an approved teacher avatar.
+- Student uploads a PDF.
+- Backend extracts text from the PDF.
+- Local backend summarizer generates summary and local Q&A answers from the PDF text.
+- TTS converts response text into speech quickly.
+- Avatar speaks the response in a live session.
+
+5. Real-Time Interaction
+- Student can ask questions during the session.
+- Avatar responds immediately.
+- If student says "stop", "excuse me", or interrupts:
+  - avatar stops speaking
+  - system switches to listening mode
+  - system answers the new question
+
+6. No Full Video Per Lesson
+- Full MP4 generation should not be the main lesson flow.
+- Pre-rendered MP4 can be used only for:
+  - demo preview
+  - avatar testing
+  - admin verification
+- Main classroom experience should be live, not batch video generation.
+
+7. Best Use of SadTalker
+- SadTalker can be used for:
+  - one-time preview generation
+  - initial avatar demo clip
+- SadTalker should not be the core live-class engine.
+
+8. Best Technical Direction
+- Use heavy generation once during avatar setup.
+- Use fast runtime components during class:
+  - PDF text extraction
+  - local extractive summary/Q&A
+  - TTS
+  - real-time or near-real-time lip-sync rendering
+
+9. What Needs To Be Built Next
+- backend avatar status fields
+- backend avatar asset upload/storage
+- admin trigger for avatar creation
+- live class page in frontend
+- local PDF summary endpoint
+- TTS response pipeline
+- interrupt handling
+- real-time avatar playback integration
+
+10. Final Product Experience
+- Student requests a teacher avatar.
+- Admin approves it.
+- Avatar is prepared once.
+- Student opens a live class with that teacher.
+- Student uploads PDF and starts learning immediately.
+- Student can ask questions and interrupt naturally.
+
+Conclusion
+- The best option is:
+  - one-time avatar creation after admin approval
+  - live interactive teaching afterwards
+- This is the correct direction for your project.
+- It is better than generating a separate full video for every PDF upload.
+- Current implementation note:
+  - PDF summary and Q&A are local for now
+  - no OpenAI API key is required
+  - later, a stronger model can be added optionally without changing the main user flow

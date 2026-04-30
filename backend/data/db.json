@@ -1,0 +1,118 @@
+{
+  "users": [
+    {
+      "_id": "6d3f05c7-41df-44f7-90ac-8907f4981bf4",
+      "createdAt": "2026-04-29T11:42:38.150Z",
+      "updatedAt": "2026-04-30T04:35:48.448Z",
+      "username": "Test1",
+      "email": "hemanthmudhiraj8055@gmail.com",
+      "password": "$2b$10$eXURhsZxv.or7tB21YW8iuVviLqrRMn48RNO4vjp9kHTgjs5c84e.",
+      "role": "user",
+      "isVerified": true,
+      "accountStatus": "active",
+      "profilePicture": null,
+      "phone": "",
+      "bio": "",
+      "lastLogin": "2026-04-30T04:35:48.448Z",
+      "monthlyBookLimit": 10,
+      "booksReadThisMonth": 0,
+      "totalPagesRead": 0,
+      "readingStreak": 0,
+      "lastReadDate": null,
+      "resetToken": null,
+      "resetTokenExpiry": null
+    },
+    {
+      "_id": "00f6873a-c5ba-445a-8089-f944fbbe950b",
+      "createdAt": "2026-04-29T14:40:25.465Z",
+      "updatedAt": "2026-04-30T05:00:18.721Z",
+      "username": "admin",
+      "email": "admin@shikshak.local",
+      "password": "$2b$10$40bQVqhXJKhNDiEaHFH.LOO8MflLohBK3n2UBCWfJ8r4jbM3FTsom",
+      "role": "admin",
+      "isVerified": true,
+      "accountStatus": "active",
+      "profilePicture": null,
+      "phone": "",
+      "bio": "",
+      "preferences": {
+        "theme": "system",
+        "notifications": {
+          "email": true,
+          "push": true
+        },
+        "privacy": {
+          "readReceipts": true,
+          "onlineStatus": true
+        },
+        "accessibility": {
+          "reduceMotion": false,
+          "highContrast": false
+        }
+      },
+      "lastLogin": "2026-04-30T05:00:18.720Z",
+      "monthlyBookLimit": 10,
+      "booksReadThisMonth": 0,
+      "totalPagesRead": 0,
+      "readingStreak": 0,
+      "lastReadDate": null,
+      "resetToken": null,
+      "resetTokenExpiry": null
+    }
+  ],
+  "books": [],
+  "userBooks": [],
+  "highlights": [],
+  "todos": [],
+  "events": [],
+  "teachers": [
+    {
+      "_id": "15df329b-bde1-40e6-b0f3-e8e58d536fb2",
+      "createdAt": "2026-04-29T14:36:28.726Z",
+      "updatedAt": "2026-04-29T14:36:28.726Z",
+      "aiTeacherName": "Hi",
+      "subject": "Maths",
+      "status": "pending",
+      "addedBy": "6d3f05c7-41df-44f7-90ac-8907f4981bf4",
+      "requestType": "student_request",
+      "consent": true,
+      "photoUrl": "uploads/teachers/photos/teacherPhoto-1777473388717-352008506.jpeg",
+      "videoUrl": null,
+      "approvedBy": null,
+      "approvedAt": null,
+      "rejectedBy": null,
+      "rejectedAt": null,
+      "rejectionReason": null
+    }
+  ],
+  "teacherSessions": [],
+  "teacherChatMessages": [],
+  "avatarJobs": [],
+  "notifications": [],
+  "messages": [],
+  "homework": [],
+  "homeworkPacks": [],
+  "homeworkAttempts": [],
+  "exams": [],
+  "transactions": [],
+  "feeInvoices": [],
+  "payments": [],
+  "receipts": [],
+  "paymentIssues": [],
+  "otps": [
+    {
+      "_id": "def3c3e2-8ffa-436c-84c1-3885a3c5a862",
+      "createdAt": "2026-04-29T11:38:58.764Z",
+      "updatedAt": "2026-04-29T11:42:37.942Z",
+      "email": "hemanthmudhiraj8055@gmail.com",
+      "otp": "1863",
+      "attempts": 1,
+      "isUsed": true,
+      "expiresAt": "2026-04-29T11:43:58.753Z"
+    }
+  ],
+  "botMemories": [],
+  "botQuota": [],
+  "chatRequests": [],
+  "blocks": []
+}
